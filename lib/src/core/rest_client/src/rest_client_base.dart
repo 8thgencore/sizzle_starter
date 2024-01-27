@@ -4,7 +4,7 @@ import 'dart:isolate';
 
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:sizzle_starter/src/core/components/rest_client/rest_client.dart';
+import 'package:sizzle_starter/src/core/rest_client/rest_client.dart';
 
 /// {@macro rest_client}
 @immutable
@@ -17,12 +17,12 @@ abstract base class RestClientBase implements RestClient {
 
   static final _jsonUTF8 = json.fuse(utf8);
 
-  /// Encodes [body] to JSON and then to UTF8
+  /// Encodes [body] to JSON string
   @protected
   @visibleForTesting
-  List<int> encodeBody(Map<String, Object?> body) {
+  String encodeBody(Map<String, Object?> body) {
     try {
-      return _jsonUTF8.encode(body);
+      return json.encode(body);
     } on Object catch (e, stackTrace) {
       Error.throwWithStackTrace(
         ClientException(message: 'Error occured during encoding $e'),
